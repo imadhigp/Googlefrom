@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #c18ae6da 0%, #4d89d8d8 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    .section {
+      margin-bottom: 40px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 24px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    .card h3 {
+      font-size: 42px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .card p {
+      font-size: 16px;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+    /* Colors */
+    .total { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+    .yes { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .maybe { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #222; }
+    .no { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+    /* Emoji icon */
+    .icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 32px;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+    }
+    .card:hover .icon {
+      opacity: 0.6;
+      transform: scale(1.2);
+    }
+    /* Percentage badge */
+    .percentage {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+    /* Stats summary */
+    .stats-summary {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border-radius: 12px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-item .label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .stat-item .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 28px;
+      }
+      .card h3 {
+        font-size: 32px;
+      }
+      .card p {
+        font-size: 14px;
+      }
+      .icon {
+        font-size: 24px;
+      }
+      .stats-summary {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Survey Dashboard</h1>
+      <p>Real-time response tracking and analytics</p>
+    </div>
+
+    <!-- Today Section -->
+    <div class="section">
+      <h2> Today (October 25, 2025)</h2>
+      <div class="cards">
+        <div class="card total">
+          <div class="icon">#️⃣</div>
+          <h3>8</h3>
+          <p>Total Responses</p>
+        </div>
+        <div class="card yes">
+          <div class="icon">😊</div>
+          <h3>8</h3>
+          <p>Yes</p>
+          <div class="percentage">100%</div>
+        </div>
+        <div class="card maybe">
+          <div class="icon">😐</div>
+          <h3>0</h3>
+          <p>May Be</p>
+          <div class="percentage">0%</div>
+        </div>
+        <div class="card no">
+          <div class="icon">😞</div>
+          <h3>0</h3>
+          <p>No</p>
+          <div class="percentage">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Section -->
+    <div class="section">
+      <h2> This Month (October 2025)</h2>
+      <div class="cards">
+        <div class="card total">
+          <div class="icon">#️⃣</div>
+          <h3>483</h3>
+          <p>Total Responses</p>
+        </div>
+        <div class="card yes">
+          <div class="icon">😊</div>
+          <h3>442</h3>
+          <p>Yes</p>
+          <div class="percentage">91.5%</div>
+        </div>
+        <div class="card maybe">
+          <div class="icon">😐</div>
+          <h3>11</h3>
+          <p>May Be</p>
+          <div class="percentage">2.3%</div>
+        </div>
+        <div class="card no">
+          <div class="icon">😞</div>
+          <h3>30</h3>
+          <p>No</p>
+          <div class="percentage">6.2%</div>
+        </div>
+      </div>
+      
+      <div class="stats-summary">
+        <div class="stat-item">
+          <div class="label">Positive Rate</div>
+          <div class="value" style="color: #10b981;">91.5%</div>
+        </div>
+        <div class="stat-item">
+          <div class="label">Average Daily</div>
+          <div class="value" style="color: #719ee6;">19.3</div>
+        </div>
+        <div class="stat-item">
+          <div class="label">Response Trend</div>
+          <div class="value" style="color: #5c859c;">↑ 12%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+</body>
+</html>
