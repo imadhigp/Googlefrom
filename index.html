@@ -1,463 +1,495 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Responsive Multi-Page 15-Question Form</title>
   <style>
-    :root{
-      --paper-bg:#ffffff;
-      --paper-edge:#e0e0e0;
-      --accent:#2563eb;
-      --muted:#555;
-      --shadow:0 8px 24px rgba(0,0,0,0.1);
-      --error:#ef4444;
+    :root {
+      --paper-bg: #ffffff;
+      --paper-edge: #e0e0e0;
+      --accent: #2563eb;
+      --muted: #555;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --error: #ef4444;
     }
 
-    *{
-      box-sizing:border-box;
-      font-family:Inter, system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
     }
 
-    body{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      background:#f4f7fb;
-      min-height:100vh;
-      margin:0;
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #f4f7fb;
+      min-height: 100vh;
+      margin: 0;
     }
 
-    .paper{
-      width:100%;
-      max-width:800px;
-      background:var(--paper-bg);
-      border-radius:14px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--paper-edge);
+    .paper {
+      width: 100%;
+      max-width: 800px;
+      background: var(--paper-bg);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--paper-edge);
     }
 
-    header{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:16px;
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
-    .title{
-      font-size:1.3rem;
-      font-weight:600;
-       
-    }
-    .subtitle{
-      font-size:0.9rem;
-      color:var(--muted);
-      
+    .title {
+      font-size: 1.3rem;
+      font-weight: 600;
+
     }
 
-    .progress{
-      height:8px;
-      background:#e5e7eb;
-      border-radius:999px;
-      overflow:hidden;
-      margin:12px 0;
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+
     }
 
-    .progress>i{
-      display:block;
-      height:100%;
-      width:0;
-      background:linear-gradient(90deg,var(--accent),#60a5fa);
-      transition:width .4s ease;
+    .progress {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 12px 0;
     }
 
-    form{
-      width:100%;
+    .progress>i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), #60a5fa);
+      transition: width .4s ease;
     }
 
-    .pages{
-      position:relative;
-      width:100%;
-      overflow:hidden;
-      min-height:400px;
+    form {
+      width: 100%;
     }
 
-    .page{
-      position:absolute;
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      transition:transform .4s ease, opacity .3s ease;
-      opacity:0;
-      transform:translateX(100%);
+    .pages {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      min-height: 400px;
     }
 
-    .page.visible{
-      position:relative;
-      opacity:1;
-      transform:translateX(0);
-    }
-
-    .page.left{
-      transform:translateX(-100%);
-    }
-
-    .info-section{
-      background:#f0f9ff;
-      border:1px solid #bfdbfe;
-      border-radius:10px;
-      padding:20px;
-    }
-
-    .info-section h3{
-      margin:0 0 20px 0;
-      color:var(--accent);
-      font-size:1.2rem;
-      text-align:center;
-    }
-
-    .info-field{
-      margin-bottom:16px;
-    }
-
-    .info-field label{
-      display:block;
-      font-weight:600;
-      margin-bottom:6px;
-      font-size:0.95rem;
-    }
-
-    .info-field label .required{
-      color:var(--error);
-      margin-left:2px;
-    }
-
-    .info-field input{
-      width:100%;
-      padding:12px 14px;
-      border-radius:8px;
-      border:1px solid #ccc;
-      font-size:1rem;
-      transition:border-color .2s;
-    }
-
-    .info-field input:focus{
-      outline:none;
-      border-color:var(--accent);
-    }
-
-    .info-field input.error{
-      border-color:var(--error);
-    }
-
-    .question{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-start;
-      background:#fafafa;
-      border:1px solid #e5e7eb;
-      border-radius:10px;
-      padding:16px;
-      box-shadow:0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .question.error-state{
-      border-color:var(--error);
-      background:#fef2f2;
-    }
-
-    .question label.question-label{
-      font-weight:600;
-      margin-bottom:12px;
-      font-size:1rem;
-    }
-
-    .question label.question-label .required{
-      color:var(--error);
-      margin-left:2px;
-    }
-
-    .options{
-      display:flex;
+    .page {
+      position: absolute;
+      width: 100%;
+      display: flex;
       flex-direction: column;
-      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-      gap:10px;
-      width:100%;
+      gap: 16px;
+      transition: transform .4s ease, opacity .3s ease;
+      opacity: 0;
+      transform: translateX(100%);
     }
 
-    .options label{
-      display:flex;
-      align-items:left;
-      justify-content:left;
-      gap:8px;
-      padding:12px 16px;
-      background:#fff;
-      border:2px solid #e5e7eb;
-      border-radius:8px;
-      cursor:pointer;
-      transition:all .2s;
-      font-weight:500;
-      text-align:center;
+    .page.visible {
+      position: relative;
+      opacity: 1;
+      transform: translateX(0);
     }
 
-    .options label:hover{
-      border-color:var(--accent);
-      background:#f0f9ff;
-      transform:translateY(-2px);
-      box-shadow:0 4px 8px rgba(37,99,235,0.1);
+    .page.left {
+      transform: translateX(-100%);
     }
 
-    .options input[type="radio"]{
-      cursor:pointer;
-      width:18px;
-      height:18px;
+    .info-section {
+      background: #f0f9ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 20px;
     }
 
-    .options label:has(input:checked){
-      border-color:var(--accent);
-      background:#dbeafe;
-      font-weight:600;
+    .info-section h3 {
+      margin: 0 0 20px 0;
+      color: var(--accent);
+      font-size: 1.2rem;
+      text-align: center;
     }
 
-    .error-msg{
-      color:var(--error);
-      font-size:0.85rem;
-      margin-top:8px;
-      display:none;
-      font-weight:500;
+    .info-field {
+      margin-bottom: 16px;
     }
 
-    .error-msg.visible{
-      display:block;
+    .info-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
     }
 
-    .nav{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:20px;
-      flex-wrap:wrap;
-      gap:12px;
+    .info-field label .required {
+      color: var(--error);
+      margin-left: 2px;
     }
 
-    button{
-      background:var(--accent);
-      color:#fff;
-      border:0;
-      padding:12px 24px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-      transition:opacity .2s, transform .1s;
-      font-size:0.95rem;
+    .info-field input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border-color .2s;
     }
 
-    button:hover:not([disabled]){
-      opacity:0.9;
-      transform:translateY(-1px);
+    .info-field input:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
-    button:active:not([disabled]){
-      transform:scale(0.98);
+    .info-field input.error {
+      border-color: var(--error);
     }
 
-    button[disabled]{
-      opacity:0.5;
-      cursor:not-allowed;
+    .question {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: #fafafa;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     }
 
-    .btn-ghost{
-      background:transparent;
-      color:var(--accent);
-      border:2px solid var(--accent);
+    .question.error-state {
+      border-color: var(--error);
+      background: #fef2f2;
     }
 
-    .left{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    .question label.question-label {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1rem;
     }
 
-    .dots{
-      display:flex;
-      gap:8px;
-      align-items:center;
+    .question label.question-label .required {
+      color: var(--error);
+      margin-left: 2px;
     }
 
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:#ccc;
-      transition:background .3s, transform .2s;
-      cursor:pointer;
+    .options {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      width: 100%;
     }
 
-    .dot:hover{
-      transform:scale(1.2);
+    .options label {
+      display: flex;
+      align-items: left;
+      justify-content: left;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: 500;
+      text-align: center;
     }
 
-    .dot.active{
-      background:var(--accent);
-      transform:scale(1.3);
+    .options label:hover {
+      border-color: var(--accent);
+      background: #f0f9ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.1);
     }
 
-    .dot.completed{
-      background:#10b981;
+    .options input[type="radio"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
     }
 
-    .success-screen{
-      display:none;
-      text-align:center;
-      padding:40px 20px;
+    .options label:has(input:checked) {
+      border-color: var(--accent);
+      background: #dbeafe;
+      font-weight: 600;
     }
 
-    .success-screen.visible{
-      display:block;
+    .error-msg {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 8px;
+      display: none;
+      font-weight: 500;
     }
 
-    .success-icon{
-      width:80px;
-      height:80px;
-      margin:0 auto 20px;
-      background:linear-gradient(135deg,#10b981,#059669);
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#fff;
-      font-size:40px;
-      animation:scaleIn 0.5s ease;
+    .error-msg.visible {
+      display: block;
     }
 
-    @keyframes scaleIn{
-      from{transform:scale(0);}
-      to{transform:scale(1);}
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .summary{
-      text-align:left;
-      margin-top:30px;
-      background:#fafafa;
-      padding:20px;
-      border-radius:10px;
-      max-height:400px;
-      overflow-y:auto;
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s, transform .1s;
+      font-size: 0.95rem;
     }
 
-    .summary-item{
-      margin-bottom:15px;
-      padding-bottom:15px;
-      border-bottom:1px solid #e5e7eb;
+    button:hover:not([disabled]) {
+      opacity: 0.9;
+      transform: translateY(-1px);
     }
 
-    .summary-item:last-child{
-      border-bottom:none;
+    button:active:not([disabled]) {
+      transform: scale(0.98);
     }
 
-    .summary-label{
-      font-weight:600;
-      color:var(--muted);
-      font-size:0.85rem;
-      margin-bottom:4px;
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
-    .summary-value{
-      color:#000;
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
     }
 
-    @media (max-width:600px){
-      body{padding:10px;}
-      .paper{padding:16px;}
-      .title{font-size:1.1rem;}
-      .question{padding:12px;}
-      .options{grid-template-columns:1fr 1fr;}
-      .nav{gap:8px;}
-      button{padding:10px 18px;font-size:0.9rem;}
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background .3s, transform .2s;
+      cursor: pointer;
+    }
+
+    .dot:hover {
+      transform: scale(1.2);
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.3);
+    }
+
+    .dot.completed {
+      background: #10b981;
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-screen.visible {
+      display: block;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 40px;
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .summary {
+      text-align: left;
+      margin-top: 30px;
+      background: #fafafa;
+      padding: 20px;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .summary-item {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .summary-value {
+      color: #000;
+    }
+
+    @media (max-width:600px) {
+      body {
+        padding: 10px;
+      }
+
+      .paper {
+        padding: 16px;
+      }
+
+      .title {
+        font-size: 1.1rem;
+      }
+
+      .question {
+        padding: 12px;
+      }
+
+      .options {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .nav {
+        gap: 8px;
+      }
+
+      button {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
     }
 
 
-.my-image {
-    display: flex;            
-    max-width: 100%;           
-    height: auto;             
-    border-radius: 8px;       
-    box-shadow: 0 6px 18px rgba(20,20,30,0.06);
-    object-fit: cover;        
-    align-items: center;
-    padding-left: 95px;
-    padding-right: 137px;
-    padding-bottom: 20px;
+    .my-image {
+      display: flex;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(20, 20, 30, 0.06);
+      object-fit: cover;
+      align-items: center;
+      padding-left: 95px;
+      padding-right: 137px;
+      padding-bottom: 20px;
 
-}
+    }
 
-  /* fixed-size avatar example (useful for profile pics) */
-  .my-image.avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    display: inline-block;
-  }
+    /* fixed-size avatar example (useful for profile pics) */
+    .my-image.avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: inline-block;
+    }
 
-  /* small helper: limit displayed height but keep width fluid */
-  .my-image.max-h {
-    max-height: 320px;
-    width: auto;
-  }
+    /* small helper: limit displayed height but keep width fluid */
+    .my-image.max-h {
+      max-height: 320px;
+      width: auto;
+    }
 
-  /* accessibility / focus outline when keyboard-selecting */
-  .my-image:focus {
-    outline: 3px solid rgba(37,99,235,0.25);
-    outline-offset: 3px;
-  }
+    /* accessibility / focus outline when keyboard-selecting */
+    .my-image:focus {
+      outline: 3px solid rgba(37, 99, 235, 0.25);
+      outline-offset: 3px;
+    }
 
-  .flower {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-image: url('https://i.postimg.cc/W3vYZcLH/flower.png');  
-    background-size: cover;
-    pointer-events: none;
-    animation: fall linear forwards;
-  }
+    .flower {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('https://i.postimg.cc/W3vYZcLH/flower.png');
+      background-size: cover;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
 
-   @keyframes fall {
-    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-  }
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
 
-
-  .question-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
-}
-
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
 
 
-
+    .question-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
   </style>
 </head>
+
 <body>
   <div class="paper">
     <div id="formContainer">
       <header>
         <div>
-            
-       <img src ="2.png" alt="Description of image" class="my-image" />
-          
+
+          <img src="2.png" alt="Description of image" class="my-image" />
+
           <div class="title">15-Question Survey</div>
-          
+
           <div class="subtitle" id="headerSubtitle">Fill Details</div>
         </div>
         <div class="subtitle">Page <span id="pageNum">1</span> / <span id="totalPages">4</span></div>
       </header>
- 
+
       <div class="progress">
         <i id="progressBar"></i>
       </div>
@@ -466,96 +498,100 @@
       <form id="surveyForm">
         <div class="pages">
           <!-- Page 0: Personal Information -->
-
-
-
           <section class="page visible" data-page="0">
             <div class="info-section">
               <h3>📋 Personal Information</h3>
-              
+
               <div class="info-field">
                 <label>Name <span class="required">*</span></label>
                 <input type="text" name="name" id="name" required placeholder="Enter your full name">
               </div>
               <div class="info-field">
                 <label>Phone Number <span class="required">*</span></label>
-                <input type="tel" name="phone" id="phone" required placeholder="Enter your phone number" oninput="validatePhone()"> <span class="error-msg" id="phoneError" style="color:red; display:none;">Please enter a valid phone number</span>
-                </div>
-              
+                <input type="tel" name="phone" id="phone" required placeholder="Enter your phone number"
+                  oninput="validatePhone()"> <span class="error-msg" id="phoneError"
+                  style="color:red; display:none;">Please enter a valid phone number</span>
+              </div>
+
               <div class="info-field">
                 <label>Vehicle Number <span class="required">*</span></label>
                 <input type="text" name="vehicle" id="vehicle" required placeholder="Enter your vehicle number">
               </div>
               <button type="Reset" id="clear" style="align-items:center ; justify-content:center;">Clear</button>
             </div>
-             
+
           </section>
 
           <!-- Page 1: Questions 1-5 -->
           <section class="page" data-page="q1">
             <div class="question" data-question="q1">
-              <label class="question-label">How did you hear about Glitz Park?<span class="required">*</span></label>
+              <label class="question-label">1. How did you hear about Glitz Park?<span class="required">*</span></label>
               <div class="options">
-                <label><input type="radio" name="q1" value="1" required>  Social Media (Facebook, Instagram, etc.)</label> 
-                <label><input type="radio" name="q1" value="2">  Friends / Family Recommendation</label>
-                <label><input type="radio" name="q1" value="3">  Online Advertisement</label>
+                <label><input type="radio" name="q1" value="1" required> Social Media (Facebook, Instagram,
+                  etc.)</label>
+                <label><input type="radio" name="q1" value="2"> Friends / Family Recommendation</label>
+                <label><input type="radio" name="q1" value="3"> Online Advertisement</label>
                 <label><input type="radio" name="q1" value="4"> Walk-in / Location Visibility </label>
-                 <label><input type="radio" name="q1" value="4"> Other <input type="text" class="other" placeholder="Please specify" style="width: 100%; height: 27px;"> </label> 
-                  
+                <label><input type="radio" name="q1" value="4"> Other <input type="text" class="other"
+                    placeholder="Please specify" style="width: 100%; height: 27px;"> </label>
+
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
 
             <div class="question" data-question="q2">
-              <label class="question-label"> How long you have been a customer of Glitz Park<span class="required">*</span></label>
+              <label class="question-label">2. How long you have been a customer of Glitz Park<span
+                  class="required">*</span></label>
               <div class="options">
-                <label><input type="radio" name="q2" value="1" required>  Less Than 3 months</label>
+                <label><input type="radio" name="q2" value="1" required> Less Than 3 months</label>
                 <label><input type="radio" name="q2" value="2"> 3-6 months</label>
-                <label><input type="radio" name="q2" value="3">  6 to 12 months</label>
-                <label><input type="radio" name="q2" value="4">  1-3 years</label>
+                <label><input type="radio" name="q2" value="3"> 6 to 12 months</label>
+                <label><input type="radio" name="q2" value="4"> 1-3 years</label>
                 <label><input type="radio" name="q2" value="4"> More than 3 Years</label>
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
 
             <div class="question" data-question="q3">
-              <label class="question-label">What type of services do you use most often
+              <label class="question-label">3. What type of services do you use most often
 
-<span class="required">*</span></label>
+                <span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q3" value="1" required> Vehicle Wash / Detailing</label>
                 <label><input type="radio" name="q3" value="2"> Vehicle Repair / Maintenance</label>
                 <label><input type="radio" name="q3" value="3"> Oil Change / Servicing</label>
                 <label><input type="radio" name="q3" value="4"> Interior / Upholstery Cleaning</label>
                 <label><input type="radio" name="q3" value="5"> Accident Repairs </label>
-                  
-               <label><input type="radio" name="q3" value="5">
-                  Other  
-                <input type="text" class="other" placeholder="Please specify" style="width: 100%; height: 27px;"></label>
+
+                <label><input type="radio" name="q3" value="5">
+                  Other
+                  <input type="text" class="other" placeholder="Please specify"
+                    style="width: 100%; height: 27px;"></label>
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
 
             <div class="question" data-question="q4">
-              <label class="question-label">Was it easy to book your appointment?
-                 <span class="required">*</span></label>
+              <label class="question-label">4. Was it easy to book your appointment?
+                <span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q4" value="1" required> Very Easy</label>
-                <label><input type="radio" name="q4" value="2">  Easy</label>
+                <label><input type="radio" name="q4" value="2"> Easy</label>
                 <label><input type="radio" name="q4" value="3"> Neutral</label>
-                <label><input type="radio" name="q4" value="4">  Difficult</label>
-                <label><input type="radio" name="q4" value="5">  Very Difficult</label>
+                <label><input type="radio" name="q4" value="4"> Difficult</label>
+                <label><input type="radio" name="q4" value="5"> Very Difficult</label>
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
 
             <div class="question" data-question="q5">
-              <label class="question-label">Were Glitz Park staff polite and helpful?<span class="required">*</span></label>
+              <label class="question-label">5. Were Glitz Park staff polite and helpful?<span
+                  class="required">*</span></label>
               <div class="options">
-                <label><input type="radio" name="q5" value="1" required>  Strongly disagree</label>
+                <label><input type="radio" name="q5" value="1" required> Strongly disagree</label>
                 <label><input type="radio" name="q5" value="2"> Disagree</label>
-                <label><input type="radio" name="q5" value="3">  Neutral</label>
-                <label><input type="radio" name="q5" value="4">  Agree</label>
+                <label><input type="radio" name="q5" value="3"> Neutral</label>
+                <label><input type="radio" name="q5" value="4"> Agree</label>
                 <label><input type="radio" name="q5" value="5"> Strongly agree</label>
 
               </div>
@@ -566,9 +602,10 @@
           <!-- Page 2: Questions 6-10 -->
           <section class="page" data-page="2">
             <div class="question" data-question="q6">
-              <label class="question-label">Did they explain the service and cost clearly to you<span class="required">*</span></label>
+              <label class="question-label">6. Did they explain the service and cost clearly to you<span
+                  class="required">*</span></label>
               <div class="options">
-                <label><input type="radio" name="q6" value="1" required>  Yes</label>
+                <label><input type="radio" name="q6" value="1" required> Yes</label>
                 <label><input type="radio" name="q6" value="2"> No</label>
               </div>
               <span class="error-msg">Please select an answer</span>
@@ -576,9 +613,9 @@
 
 
             <div class="question" data-question="q7">
-              <label class="question-label">Did you get the cost estimation before you came in for the service?
+              <label class="question-label">7. Did you get the cost estimation before you came in for the service?
 
-<span class="required">*</span></label>
+                <span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q7" value="1" required> Yes</label>
                 <label><input type="radio" name="q7" value="2">No</label>
@@ -587,7 +624,8 @@
             </div>
 
             <div class="question" data-question="q8">
-              <label class="question-label">Did you wait a long time before someone assisted you?<span class="required">*</span></label>
+              <label class="question-label">8. Did you wait a long time before someone assisted you?<span
+                  class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q8" value="1" required> No, I was helped immediately</label>
                 <label><input type="radio" name="q8" value="2"> Waited less than 10 minutes</label>
@@ -598,7 +636,8 @@
             </div>
 
             <div class="question" data-question="q9">
-              <label class="question-label">Was there a deadline given to deliver your vehicle after the required service<span class="required">*</span></label>
+              <label class="question-label">9. Was there a deadline given to deliver your vehicle after the required
+                service<span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q9" value="1" required> Yes</label>
                 <label><input type="radio" name="q9" value="2"> No</label>
@@ -607,14 +646,14 @@
             </div>
 
             <div class="question" data-question="q10">
-              <label class="question-label">Is your Vehicle Delivered on time after the required Service?
+              <label class="question-label">10. Is your Vehicle Delivered on time after the required Service?
 
-<span class="required">*</span></label>
+                <span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q10" value="1" required>Always on time</label>
                 <label><input type="radio" name="q10" value="2"> Usually on time</label>
                 <label><input type="radio" name="q10" value="3"> Occasionally delayed</label>
-                <label><input type="radio" name="q10" value="4">  Frequently delayed</label>
+                <label><input type="radio" name="q10" value="4"> Frequently delayed</label>
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
@@ -623,89 +662,87 @@
           <!-- Page 3: Questions 11-15 -->
           <section class="page" data-page="3">
             <div class="question" data-question="q11">
-              <label class="question-label">The staff is knowledgeable about your car’s make and model and the service type required <span class="required">*</span></label>
+              <label class="question-label">11. The staff is knowledgeable about your car’s make and model and the
+                service
+                type required <span class="required">*</span></label>
               <div class="options">
                 <label><input type="radio" name="q11" value="1" required> Strongly Agree</label>
-                <label><input type="radio" name="q11" value="2">  Agree</label>
+                <label><input type="radio" name="q11" value="2"> Agree</label>
                 <label><input type="radio" name="q11" value="3"> Neutral</label>
-                <label><input type="radio" name="q11" value="4">   Disagree</label>
+                <label><input type="radio" name="q11" value="4"> Disagree</label>
                 <label><input type="radio" name="q11" value="5"> Strongly Disagree</label>
               </div>
               <span class="error-msg">Please select an answer</span>
             </div>
 
             <div class="question" data-question="q12">
-  <label class="question-label">
-    Glitz Park pricing is fair and reasonable
-    <span class="required">*</span>
-  </label>
-  <div class="options">
-    <label><input type="radio" name="q12" value="1" required> Strongly Agree</label>
-    <label><input type="radio" name="q12" value="2"> Agree</label>
-    <label><input type="radio" name="q12" value="3"> Neutral</label>
-    <label><input type="radio" name="q12" value="4"> Disagree</label>
-    <label><input type="radio" name="q12" value="5"> Strongly Disagree</label>
-  </div>
-  <span class="error-msg">Please select an answer</span>
-</div>
+              <label class="question-label">
+                12. Glitz Park pricing is fair and reasonable
+                <span class="required">*</span>
+              </label>
+              <div class="options">
+                <label><input type="radio" name="q12" value="1" required> Strongly Agree</label>
+                <label><input type="radio" name="q12" value="2"> Agree</label>
+                <label><input type="radio" name="q12" value="3"> Neutral</label>
+                <label><input type="radio" name="q12" value="4"> Disagree</label>
+                <label><input type="radio" name="q12" value="5"> Strongly Disagree</label>
+              </div>
+              <span class="error-msg">Please select an answer</span>
+            </div>
 
-<div class="question" data-question="q13">
-  <label class="question-label">
-    How would you rate the overall quality of service you received?
-    <span class="required">*</span>
-  </label>
-  <div class="options">
-    <label><input type="radio" name="q13" value="1" required> Excellent</label>
-    <label><input type="radio" name="q13" value="2"> Good</label>
-    <label><input type="radio" name="q13" value="3"> Average</label>
-    <label><input type="radio" name="q13" value="4"> Poor</label>
-    <label><input type="radio" name="q13" value="5"> Very Poor</label>
-  </div>
-  <span class="error-msg">Please select an answer</span>
-</div>
+            <div class="question" data-question="q13">
+              <label class="question-label">
+                13. How would you rate the overall quality of service you received?
+                <span class="required">*</span>
+              </label>
+              <div class="options">
+                <label><input type="radio" name="q13" value="1" required> Excellent</label>
+                <label><input type="radio" name="q13" value="2"> Good</label>
+                <label><input type="radio" name="q13" value="3"> Average</label>
+                <label><input type="radio" name="q13" value="4"> Poor</label>
+                <label><input type="radio" name="q13" value="5"> Very Poor</label>
+              </div>
+              <span class="error-msg">Please select an answer</span>
+            </div>
 
-<div class="question" data-question="q14">
-  <label class="question-label">
-    Would you return to Glitz Park for future services?
-    <span class="required">*</span>
-  </label>
-  <div class="options">
-    <label><input type="radio" name="q14" value="1" required> Yes</label>
-    <label><input type="radio" name="q14" value="2"> No</label>
-    <label><input type="radio" name="q14" value="3"> Maybe</label>
-  </div>
-  <span class="error-msg">Please select an answer</span>
-</div>
+            <div class="question" data-question="q14">
+              <label class="question-label">
+                14. Would you return to Glitz Park for future services?
+                <span class="required">*</span>
+              </label>
+              <div class="options">
+                <label><input type="radio" name="q14" value="1" required> Yes</label>
+                <label><input type="radio" name="q14" value="2"> No</label>
+                <label><input type="radio" name="q14" value="3"> Maybe</label>
+              </div>
+              <span class="error-msg">Please select an answer</span>
+            </div>
 
-<div class="question" data-question="q15">
-  <label class="question-label">
-    How likely are you to recommend Glitz Park to others?
-    <span class="required">*</span>
-  </label>
-  <div class="options">
-    <label><input type="radio" name="q15" value="1" required> Very Likely</label>
-    <label><input type="radio" name="q15" value="2"> Likely</label>
-    <label><input type="radio" name="q15" value="3"> Neutral</label>
-    <label><input type="radio" name="q15" value="4"> Unlikely</label>
-    <label><input type="radio" name="q15" value="5"> Very Unlikely</label>
-  </div>
-  <span class="error-msg">Please select an answer</span>
-</div>
-
-
-<div class="questions" data-question="q16">
-  <label class="question-label">
-    Any suggestions, comments, or recommendations to help us serve you better?
-  </label>
-  <div class="options">
-    <input type="text" name="q16" class="other" placeholder="Please specify">
-  </div>
-  <span class="error-msg" style="color:red; display:none;">Please enter your suggestion</span>
-</div>
- 
+            <div class="question" data-question="q15">
+              <label class="question-label">
+                15. How likely are you to recommend Glitz Park to others?
+                <span class="required">*</span>
+              </label>
+              <div class="options">
+                <label><input type="radio" name="q15" value="1" required> Very Likely</label>
+                <label><input type="radio" name="q15" value="2"> Likely</label>
+                <label><input type="radio" name="q15" value="3"> Neutral</label>
+                <label><input type="radio" name="q15" value="4"> Unlikely</label>
+                <label><input type="radio" name="q15" value="5"> Very Unlikely</label>
+              </div>
+              <span class="error-msg">Please select an answer</span>
+            </div>
 
 
-
+            <div class="questions" data-question="q16">
+              <label class="question-label">
+                Any suggestions, comments, or recommendations to help us serve you better?
+              </label>
+              <div class="options">
+                <textarea type="text" name="q16" class="other" placeholder="Please specify"></textarea>
+              </div>
+              <span class="error-msg" style="color:red; display:none;">Please enter your suggestion</span>
+            </div>
           </section>
         </div>
 
@@ -725,46 +762,65 @@
     </div>
 
     <div id="successScreen" class="success-screen">
-       <div class="summary" id="summaryContainer"></div>
-      <div class="success-icon"  style=" margin-top:20px; padding-top: 10px; padding-top: 10px;">✓</div>
+      <div class="summary" id="summaryContainer"></div>
+      <div class="success-icon" style=" margin-top:20px; padding-top: 10px; padding-top: 10px;">✓</div>
       <p class="subtitle">Your responses have been submitted successfully.</p>
       <button type="button" id="resetBtn" style="margin-top:20px; padding-top: 10px; padding-top: 10px;">Finish</button>
-      
-       
     </div>
   </div>
-  <script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
 
 
-function validatePhone() {
-  const phoneInput = document.getElementById('phone');
-  const errorMsg = document.getElementById('phoneError');
+    function validatePhone() {
+      const phoneInput = document.getElementById('phone');
+      const errorMsg = document.getElementById('phoneError');
+
+      // Simple regex: 10 digits (adjust as needed)
+      const phonePattern = /^\d{10}$/;
+
+      if (phonePattern.test(phoneInput.value)) {
+        errorMsg.style.display = 'none';
+        phoneInput.style.borderColor = 'green';
+      } else {
+        errorMsg.style.display = 'inline';
+        phoneInput.style.borderColor = 'red';
+      }
+    }
+
+    const finishButton = document.getElementById('resetBtn');
+    finishButton.addEventListener('click', function () {
+      const myForm = document.getElementById('surveyForm');
+      const formData = new FormData(myForm);
+
+      const apiUrl = 'https://crm.glitzpark.lk/api/setresponse'; // Example API endpoint
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+    };
+
   
-  // Simple regex: 10 digits (adjust as needed)
-  const phonePattern = /^\d{10}$/;
+      fetch(apiUrl, requestOptions)
+        .then(response => {
+          // Handle the response
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse the response body as JSON
+        })
+        .then(data => {
+          console.log('Success:', data); // Log the successful response data
+        })
+        .catch(error => {
+          console.error('Error:', error); // Handle any errors during the fetch operation
+        });
 
-  if (phonePattern.test(phoneInput.value)) {
-    errorMsg.style.display = 'none';
-    phoneInput.style.borderColor = 'green';
-  } else {
-    errorMsg.style.display = 'inline';
-    phoneInput.style.borderColor = 'red';
-  }
-}
-
-
-
-
- const finishButton = document.getElementById('resetBtn');
-
-  finishButton.addEventListener('click', function() {
-    // Replace the button with the thank you message
-    finishButton.outerHTML = '<span style="font-size:18px; color:green;">Thank you!</span>';
-  });
+      finishButton.outerHTML = '<span style="font-size:18px; color:green;">Thank you!</span>';
+    });
 
 
 
@@ -780,7 +836,7 @@ function validatePhone() {
     const successScreen = document.getElementById('successScreen');
     const summaryContainer = document.getElementById('summaryContainer');
     const headerSubtitle = document.getElementById('headerSubtitle');
-    
+
     let current = 0;
     totalPages.textContent = pages.length;
 
@@ -788,34 +844,34 @@ function validatePhone() {
       const name = document.getElementById('name');
       const phone = document.getElementById('phone');
       const vehicle = document.getElementById('vehicle');
-      
+
       let valid = true;
-      
+
       if (!name.value.trim()) {
         name.classList.add('error');
         valid = false;
       } else {
         name.classList.remove('error');
       }
-      
+
       if (!phone.value.trim()) {
         phone.classList.add('error');
         valid = false;
       } else {
         phone.classList.remove('error');
       }
-      
+
       if (!vehicle.value.trim()) {
         vehicle.classList.add('error');
         valid = false;
       } else {
         vehicle.classList.remove('error');
       }
-      
+
       if (!valid) {
         alert('Please fill in all personal information fields');
       }
-      
+
       return valid;
     }
 
@@ -833,7 +889,7 @@ function validatePhone() {
         const radios = question.querySelectorAll(`input[name="${radioName}"]`);
         const errorMsg = question.querySelector('.error-msg');
         const isChecked = Array.from(radios).some(r => r.checked);
-        
+
         if (!isChecked) {
           question.classList.add('error-state');
           if (errorMsg) errorMsg.classList.add('visible');
@@ -850,7 +906,7 @@ function validatePhone() {
     function clearErrors() {
       const questions = form.querySelectorAll('.question');
       const errorMsgs = form.querySelectorAll('.error-msg');
-      
+
       questions.forEach(q => q.classList.remove('error-state'));
       errorMsgs.forEach(msg => msg.classList.remove('visible'));
     }
@@ -866,21 +922,21 @@ function validatePhone() {
     function showPage(index, direction = 'next') {
       if (index < 0) index = 0;
       if (index >= pages.length) index = pages.length - 1;
-      
+
       const oldPage = pages[current];
       const newPage = pages[index];
-      
+
       if (direction === 'next') {
         oldPage.classList.add('left');
       }
       oldPage.classList.remove('visible');
-      
+
       setTimeout(() => {
         newPage.classList.remove('left');
         newPage.classList.add('visible');
         oldPage.classList.remove('left');
       }, 50);
-      
+
       dots.forEach((d, i) => {
         d.classList.toggle('active', i === index);
         if (i < index) {
@@ -889,11 +945,11 @@ function validatePhone() {
           d.classList.remove('completed');
         }
       });
-      
+
       pageNum.textContent = index + 1;
       progressBar.style.width = ((index + 1) / pages.length * 100) + '%';
       prevBtn.disabled = index === 0;
-      
+
       // Update button text based on page
       if (index === 0) {
         nextBtn.textContent = 'START SURVEY';
@@ -902,7 +958,7 @@ function validatePhone() {
       } else {
         nextBtn.textContent = 'NEXT';
       }
-      
+
       current = index;
       updateHeaderSubtitle();
       clearErrors();
@@ -912,12 +968,12 @@ function validatePhone() {
       if (!validatePage()) {
         return;
       }
-      
+
       if (current === pages.length - 1) {
         submitForm();
         return;
       }
-      
+
       showPage(current + 1, 'next');
     };
 
@@ -938,7 +994,7 @@ function validatePhone() {
     function submitForm() {
       const formDataObj = new FormData(form);
       let summaryHTML = '<h3 style="margin-top:0">Your Responses:</h3>';
-      
+
       summaryHTML += `
         <div class="summary-item">
           <div class="summary-label">Name</div>
@@ -953,7 +1009,7 @@ function validatePhone() {
           <div class="summary-value">${formDataObj.get('vehicle')}</div>
         </div>
       `;
-      
+
       for (let i = 1; i <= 15; i++) {
         const value = formDataObj.get(`q${i}`);
         summaryHTML += `
@@ -963,40 +1019,41 @@ function validatePhone() {
           </div>
         `;
       }
-      
+
       summaryContainer.innerHTML = summaryHTML;
       formContainer.style.display = 'none';
       successScreen.classList.add('visible');
-      
+
       console.log('Form submitted:', Object.fromEntries(formDataObj));
     }
 
-     // Initialize
+    // Initialize
     progressBar.style.width = '25%';
     updateHeaderSubtitle();
-   
-const btn = document.getElementById('resetBtn');
 
-  btn.addEventListener('click', () => {
-    // Create 30 flowers
-    for(let i = 0; i < 30; i++) {
-      const flower = document.createElement('div');
-      flower.classList.add('flower');
-      flower.style.left = Math.random() * window.innerWidth + 'px';
-      flower.style.animationDuration = (3 + Math.random() * 3) + 's';
-      flower.style.width = flower.style.height = (20 + Math.random()*30) + 'px';
-      document.body.appendChild(flower);
+    const btn = document.getElementById('resetBtn');
 
-      // Remove flower after animation
-      setTimeout(() => {
-        flower.remove();
-      }, 6000);
-    }
-  });
-  
-  
-    
+    btn.addEventListener('click', () => {
+      // Create 30 flowers
+      for (let i = 0; i < 30; i++) {
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = Math.random() * window.innerWidth + 'px';
+        flower.style.animationDuration = (3 + Math.random() * 3) + 's';
+        flower.style.width = flower.style.height = (20 + Math.random() * 30) + 'px';
+        document.body.appendChild(flower);
 
- </script>
+        // Remove flower after animation
+        setTimeout(() => {
+          flower.remove();
+        }, 6000);
+      }
+    });
+
+
+
+
+  </script>
 </body>
+
 </html>
