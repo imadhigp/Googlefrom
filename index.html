@@ -504,18 +504,19 @@
 
               <div class="info-field">
                 <label>Name <span class="required">*</span></label>
-                <input type="text" name="name" id="name" required placeholder="Enter your full name">
+                <input type="text" name="name" id="name" required placeholder="Enter your full name"  >
               </div>
               <div class="info-field">
-                <label>Phone Number <span class="required">*</span></label>
-                <input type="tel" name="phone" id="phone" required placeholder="Enter your phone number"
+                <label for="phone">Phone Number (10 digits)>Phone Number <span class="required">*</span></label>
+                <input type="tel" name="phone" id="phone" required placeholder="Enter your phone number" maxlength="10" inputmode="numeric"
                   oninput="validatePhone()"> <span class="error-msg" id="phoneError"
                   style="color:red; display:none;">Please enter a valid phone number</span>
+                  
               </div>
 
               <div class="info-field">
                 <label>Vehicle Number <span class="required">*</span></label>
-                <input type="text" name="vehicle" id="vehicle" required placeholder="Enter your vehicle number">
+                <input type="text" name="vehicle" id="vehicle" required placeholder="Enter your vehicle number" maxlength="9" >
               </div>
               <button type="Reset" id="clear" style="align-items:center ; justify-content:center;">Clear</button>
             </div>
