@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,8 +34,15 @@
     }
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .logo {
@@ -172,7 +180,8 @@
         padding: 10px 12px;
       }
 
-      .login-btn, .reset-btn {
+      .login-btn,
+      .reset-btn {
         font-size: 15px;
         padding: 12px;
       }
@@ -209,7 +218,8 @@
         font-size: 12px;
       }
 
-      .login-btn, .reset-btn {
+      .login-btn,
+      .reset-btn {
         font-size: 14px;
         padding: 10px;
       }
@@ -245,10 +255,8 @@
       <button type="reset" class="reset-btn">Clear</button>
     </form>
   </div>
-<script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
     function togglePassword() {
       const passwordInput = document.getElementById('password');
@@ -270,16 +278,47 @@
       setTimeout(() => messageDiv.style.display = 'none', 3000);
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const un = document.getElementById('un').value;
       const password = document.getElementById('password').value;
-      if (un && password) {
-        showMessage('Login successful! Redirecting...', 'success');
-      } else {
-        showMessage('Please fill in all fields', 'error');
-      }
+      const apiUrl = 'https://crm.glitzpark.lk/api/login';
+      // const apiUrl = 'http://localhost:8000/api/login';
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"username":un,"password":password})
+      };
+
+
+      fetch(apiUrl, requestOptions)
+        .then(response => {
+          // Handle the response
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse the response body as JSON
+        })
+        .then(data => {
+          console.log('Success:', data); // Log the successful response data
+          showMessage('Login successful! Redirecting...', 'success');
+          window.location.replace("insight.html");
+        })
+        .catch(error => {
+          console.error('Error:', error); // Handle any errors during the fetch operation
+        });
+
+
+
+      // if (un && password) {
+      //   showMessage('Login successful! Redirecting...', 'success');
+      // } else {
+      //   showMessage('Please fill in all fields', 'error');
+      // }
     });
   </script>
 </body>
+
 </html>
